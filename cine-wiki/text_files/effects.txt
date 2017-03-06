@@ -1,0 +1,6 @@
+<h3>Slow-motion and fast-motion</h3>
+Slowing or speeding up the action in a shot by changing the frame rate.<br>
+<h3>Thematic filter</h3>
+Changing the color scheme in a shot or sequence to change the experience. For example: turning down the color in a fight scene to make it grittier.<br>
+<h3>Transparency</h3>
+Projecting footage of a scene on a screen behind the actors, a sort of early version of greenscreen.<br>

@@ -1,0 +1,17 @@
+<p><b>Username - DateJoined - Edit?</b></p>
+<% @list2.each do |liste| %>
+    <article>
+        <p>
+            <b><%= liste.username %></b> - <%= liste.date_joined %> - <%= liste.edit %>
+        <form action="/user/<%= liste.username %>" method="post" id="edit">
+        <input type="hidden" name="_method" value="put">
+        <input type="checkbox" name="edit" <%= "checked" if liste.edit %>>
+        <input type="submit" value="Make Admin">
+        </form> 
+        <a href="/user/changeuser/<%= liste.username %>">Change username or password?</a><br>
+        <a href="/user/delete/<%= liste.username %>">Delete User?</a><br>
+        </p>
+    </article>
+<% end %>
+<a href='/createaccount'>Create Normal Account</a><br>
+<a href='/createadminaccount'>Create Admin Account</a><br>

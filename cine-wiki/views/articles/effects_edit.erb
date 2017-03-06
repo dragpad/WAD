@@ -1,0 +1,14 @@
+<!--------------------------------------/-->
+<!--EDIT 4. Effects/-->
+<!--------------------------------------/-->
+<br>
+<p>Please be considerate when making edits.</p>
+
+<br><br>
+<h2>Edit article</h2><br>
+ <form action="/articles/effects_edit" method="post" id="edit">
+ <input type="hidden" name="_method" value="put">
+ <textarea rows="20" cols="90" name="message"><%=@effects%></textarea>
+ <input type="submit" value="Update">
+</form>
+<p><a href="../reset">Reset</a></p>

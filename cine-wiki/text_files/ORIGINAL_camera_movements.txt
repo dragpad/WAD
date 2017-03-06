@@ -1,0 +1,14 @@
+<h3>Panoramic</h3>
+Movement that only consists of a rotation of the camera.<br>
+<h3>Traveling</h3>
+Movement that only consists of a translation of the camera.<br>
+<h3>Pano-Traveling</h3>
+Movement that only consists of both a translation and rotation of the camera.<br>
+<h3>Vertigo</h3>
+Camera technique where the movement of the camera is compensated by the changing of the focal length, creating a distortion of the perspective.<br>
+<h3>Crane or Lima</h3>
+Movement where the camera is placed to a crane, often creating an arc like motion.<br>
+<h3>Handheld camera</h3>
+Way to hold or move the camera in a shaky and unsteady way. It creates the sensation of grittiness because of its similarity to documentaries.<br>
+<h3>Steadicam</h3>
+Similar to the handheld camera but steadier (obviously), creating a sense of reality because it is much closer to the human experience.<br>
