@@ -40,62 +40,84 @@ module OXs_Game
 	g.created_by()
 	g.student_id()
 	
-	g.displaymenu()
-	selection = @input.gets.chomp
-	
-	# menu selection.
-	if selection == '1'
+	until playing == false do
+		g.displaymenu()
+		selection = @input.gets.chomp
 		
-		# Setting up the game.
-		turns_left = 12
-		win = g.clearwinner()
-		turn = g.setturn(0)
-		g.cleartable()
-		secret = g.gensecret("RGBP")
-		
-		# Main game loop.
-		until (turns_left == 0) || (win == 1) do
-			puts "there are #{turns_left} turns left."
-			turns_left -= 1
+		# Menu selection.
+		# Start.
+		if selection == '1'
+
+
+			# Setting up the game.
+			turns_left = 12
+			win = g.clearwinner()
+			turn = g.setturn(0)
+			g.cleartable()
+			secret = g.gensecret("RGBP")
+
 			
-			# Print current table.
-			g.displaytable()
-			
-			# Enter guess and checks if the guess is valid.
-			puts "Enter your guess:"
-			guess = gets.chomp.upcase
-			until g.checksecret(guess) == 0 do
-				puts "Wrong input, try again:"
+			# Main game loop.
+			until (turns_left == 0) || (win == 1) do
+				puts "there are #{turns_left} turns left."
+				turns_left -= 1
+				
+				# Print current table.
+				g.displaytable()
+				
+				# Enter guess and checks if the guess is valid.
+				puts "Enter your guess:"
 				guess = gets.chomp.upcase
+				until g.checksecret(guess) == 0 do
+					puts "Wrong input, try again:"
+					guess = gets.chomp.upcase
+				end
+				
+				# Append guess to table.
+				g.settableturnvalue(turn,guess)
+				
+				# Check result of the round.
+				g.checkresult(turn)
+				
+				# Chech score.
+				win = g.winner()
+				
+				# Change turn count.
+				turn += 1
 			end
 			
-			# Append guess to table.
-			g.settableturnvalue(turn,guess)
+			if turns_left == 0 && win ==0
+				puts "You Lost :'("
+			end
 			
-			# Check result of the round.
-			g.checkresult(turn)
+		# New.
+		elsif selection == '2'
+		
+		# Setting up the game.
+			turns_left = 12
+			win = g.clearwinner()
+			turn = g.setturn(0)
+			g.cleartable()
+			secret = g.gensecret("RGBP")
 			
-			# Chech score.
-			win = g.winner()
+			g.clearwinner()
+			g.setturn(0)
+			g.gensecret("RGBP")
 			
-			# Change turn count.
-			turn += 1
+		# Analysis.
+		elsif selection == '3'
+			g.displayanalysis()
+			
+		# Exit.
+		elsif selection == '9'
+			playing = false
+			puts "...finished game."
+			
+		else
+			puts "Wrong Input!"
+			exit
+			
 		end
-	elsif selection == '2'
-		g.clearwinner()
-		g.setturn(0)
-		g.gensecret("RGBP")
-		
-	elsif selection == '3'
-		g.displayanalysis()
-		
-	elsif selection == '9'
-		exit
-		
-	else
-		puts "Wrong Input!"
-		exit
-		
 	end
 		
 	# Any code added to command line game should be added above.

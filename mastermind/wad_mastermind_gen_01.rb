@@ -46,7 +46,9 @@ module OXs_Game
 		
 		# Test 8
 		def winner()
-			if @resulta[@turn] == 4
+			if @resulta == []
+				return 0
+			elsif (@resulta[@turn]) == 4
 				puts "You win!"
 				return 1
 			else
@@ -55,6 +57,8 @@ module OXs_Game
 		end
 		
 		def clearwinner()
+			@resulta = []
+			@resultb = []
 			return 0
 		end
 		
@@ -155,7 +159,11 @@ module OXs_Game
 			
 			@table.zip(count).each do |item, number|
 				if number != nil
-					output_string << "  #{number}. | #{item} |\n"
+					if number < 10
+						output_string << "  #{number}. | #{item} |\n"
+					else
+						output_string << " #{number}. | #{item} |\n"
+					end
 				else
 					break
 				end
@@ -261,8 +269,10 @@ module OXs_Game
 		# Test 22
 		def displayanalysis()
 			
-			# @output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[@turn]} | #{@resulta[@turn]}:#{@resultb[@turn]}\n  2. | ____ | 0:0\n  3. | ____ | 0:0\n  4. | ____ | 0:0\n  5. | ____ | 0:0\n  6. | ____ | 0:0\n  7. | ____ | 0:0\n  8. | ____ | 0:0\n  9. | ____ | 0:0\n 10. | ____ | 0:0\n 11. | ____ | 0:0\n 12. | ____ | 0:0\n\n")
-
+			if @turn == nil
+				@turn = 0
+			end
+			
 			count = []
 			thing = 0
 			(@turn + 1).times do
@@ -274,17 +284,33 @@ module OXs_Game
 			
 			output_string << "TURN | XXXX | SCORE\n===================\n"
 			
+			if @table == nil
+				@table = ["____","____","____","____","____","____","____","____","____","____","____","____"]
+			end
+			
+			if @resulta == nil
+				@resulta = []
+			end
+			
+			if @resultb == nil
+				@resultb = []
+			end
+			
 			@table.zip(count).each do |item, number|
 				if number != nil
-					output_string << "  #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
+					if number < 10
+						output_string << "  #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
+					else
+						output_string << " #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
+					end
 				else
 					break
 				end
 			end
 			
 			
-			empty_count = turn + 1
-			(11 - turn).times do
+			empty_count = @turn + 1
+			(11 - @turn).times do
 				if empty_count >= 9
 					output_string << " #{empty_count + 1}. | ____ | 0:0\n"
 				else
