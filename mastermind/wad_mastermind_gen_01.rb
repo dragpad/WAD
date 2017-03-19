@@ -50,11 +50,13 @@ module OXs_Game
 		end
 		
 		def clearwinner()
+			return 0
 		end
 		
 		# Test 9
 		def setturn(turn)
-			return turn
+			@turn = turn
+			return @turn
 		end
 		
 		def turn()
@@ -76,7 +78,10 @@ module OXs_Game
 			character_test = 0
 			secret = secret.split("")
 			for character in secret do
-				if good_characters.include? character
+				if secret.length != 4
+					character_test = 1
+					break
+				elsif good_characters.include? character
 					character_test = 0
 				else
 					character_test = 1
@@ -113,25 +118,23 @@ module OXs_Game
 		# Test 16
 		def cleartable()
 			@table = ["____","____","____","____","____","____","____","____","____","____","____","____"]
+			@resulta = []
+			@resultb = []
 		end
 		
 		# Test 17
 		def gettableturnvalue(turn)
-			return "____"
+			return @table[turn]
 		end
 		
 		# Test 18
 		def settableturnvalue(turn,  value)
 			@table[turn] = value
+			@turn = turn
 		end
 		
 		# Test 19
 		def displaytable()
-=begin
-			for value in @table do
-				puts value
-			end
-=end
 			@output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[turn]} |\n  2. | ____ |\n  3. | ____ |\n  4. | ____ |\n  5. | ____ |\n  6. | ____ |\n  7. | ____ |\n  8. | ____ |\n  9. | ____ |\n 10. | ____ |\n 11. | ____ |\n 12. | ____ |\n\n")
 		end
 		
@@ -207,8 +210,54 @@ module OXs_Game
 			end
 
 			color_score -= placement_score
+			
+			@resulta[turn] = placement_score
+			
+			@resultb[turn] = color_score
 
 			@output.puts("Result #{placement_score}:#{color_score}")
+		end
+		
+		# Test 22
+		def displayanalysis()
+			
+			@output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[@turn]} | #{@resulta[@turn]}:#{@resultb[@turn]}\n  2. | ____ | 0:0\n  3. | ____ | 0:0\n  4. | ____ | 0:0\n  5. | ____ | 0:0\n  6. | ____ | 0:0\n  7. | ____ | 0:0\n  8. | ____ | 0:0\n  9. | ____ | 0:0\n 10. | ____ | 0:0\n 11. | ____ | 0:0\n 12. | ____ | 0:0\n\n")
+=begin	
+			count = []
+			thing = 0
+			(@turn + 1).times do
+				count[thing] = thing + 1
+				thing += 1
+			end
+			
+			@output.puts"TURN | XXXX | SCORE\n===================\n"
+			
+			@table.zip(count).each do |item, number|
+				if number != nil
+					@output.puts"  #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
+				else
+					break
+				end
+			end
+			
+			
+			empty_count = turn + 1
+			(12 - turn).times do
+				if empty_count >= 9
+					@output.puts " #{empty_count + 1}. | ____ | 0:0\n"
+				else
+					@output.puts "  #{empty_count + 1}. | ____ | 0:0\n"
+				end
+				empty_count += 1
+			end
+			
+			@output.puts "\n"
+=end						
+		end
+
+		# Test 23
+		def revealtable()
+			@output.puts("TURN | #{@secret} | SCORE\n===================\n  1. | ____ |\n  2. | ____ |\n  3. | ____ |\n  4. | ____ |\n  5. | ____ |\n  6. | ____ |\n  7. | ____ |\n  8. | ____ |\n  9. | ____ |\n 10. | ____ |\n 11. | ____ |\n 12. | ____ |\n\n")
 		end
 		
 		# Any code/methods aimed at passing the RSpect tests should be added above.

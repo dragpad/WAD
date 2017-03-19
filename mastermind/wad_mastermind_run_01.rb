@@ -36,7 +36,51 @@ module OXs_Game
 		
 	# Any code added to command line game should be added below.
 		
-	start()
+	g.start()
+	g.created_by()
+	g.student_id()
+	
+	g.displaymenu()
+	selection = @input.gets.chomp
+	
+	# menu selection 
+	if selection == '1'
+		# Setting up the game 
+		turns_left = 12
+		win = g.clearwinner()
+		turn = g.setturn(0)
+		g.cleartable()
+		secret = g.gensecret("RGBP")
+		# Main game loop 
+		until (turns_left == 0) || (win == 1) do
+			puts "there are #{turns_left} turns left."
+			turns_left -= 1
+			
+			puts "Enter your guess:"
+			guess = gets.chomp.upcase
+			puts g.checksecret(guess)
+			until g.checksecret(guess) == 0 do
+				puts "Wrong input, try again:"
+				g.getguess
+			end
+			
+		end
+	elsif selection == '2'
+		g.clearwinner()
+		g.setturn(0)
+		g.gensecret("RGBP")
+		
+	elsif selection == '3'
+		g.displayanalysis()
+		
+	elsif selection == '9'
+		exit
+		
+	else
+		puts "Wrong Input!"
+		exit
+		
+	end
 		
 	# Any code added to command line game should be added above.
 	
