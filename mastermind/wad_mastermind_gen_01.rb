@@ -46,7 +46,12 @@ module OXs_Game
 		
 		# Test 8
 		def winner()
-			return 0
+			if @resulta[@turn] == 4
+				puts "You win!"
+				return 1
+			else
+				return 0
+			end
 		end
 		
 		def clearwinner()
@@ -94,8 +99,9 @@ module OXs_Game
 		# Test 12
 		def gensecret(array)
 			valid_characters = array.split("")
-			secret = valid_characters.sample(4)
-			secret = secret.join("")
+			secret = ""
+			4.times {secret << valid_characters[rand(0..3)]}
+			@secret = secret
 			return secret
 		end
 		
@@ -135,7 +141,41 @@ module OXs_Game
 		
 		# Test 19
 		def displaytable()
-			@output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[turn]} |\n  2. | ____ |\n  3. | ____ |\n  4. | ____ |\n  5. | ____ |\n  6. | ____ |\n  7. | ____ |\n  8. | ____ |\n  9. | ____ |\n 10. | ____ |\n 11. | ____ |\n 12. | ____ |\n\n")
+			#puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[@turn]} |\n  2. | ____ |\n  3. | ____ |\n  4. | ____ |\n  5. | ____ |\n  6. | ____ |\n  7. | ____ |\n  8. | ____ |\n  9. | ____ |\n 10. | ____ |\n 11. | ____ |\n 12. | ____ |\n\n")
+			
+			count = []
+			thing = 0
+			(@turn + 1).times do
+				count[thing] = thing + 1
+				thing += 1
+			end
+			output_string = ""
+			
+			output_string << "TURN | XXXX | SCORE\n===================\n"
+			
+			@table.zip(count).each do |item, number|
+				if number != nil
+					output_string << "  #{number}. | #{item} |\n"
+				else
+					break
+				end
+			end
+			
+			
+			empty_count = @turn + 1
+			(11 - @turn).times do
+				if empty_count >= 9
+					output_string << " #{empty_count + 1}. | ____ |\n"
+				else
+					output_string << "  #{empty_count + 1}. | ____ |\n"
+				end
+				empty_count += 1
+			end
+			
+			output_string << "\n"
+			
+			@output.puts output_string
+			
 		end
 		
 		# Test 20
@@ -147,8 +187,8 @@ module OXs_Game
 		def checkresult(turn)
 			color_score = 0
 			placement_score = 0
-			secret = @secret.split("")
-			guess = @table[turn].split("")
+			secret = @secret.to_s.split("")
+			guess = @table[turn].to_s.split("")
 			
 			gR = 0
 			gB = 0
@@ -221,8 +261,8 @@ module OXs_Game
 		# Test 22
 		def displayanalysis()
 			
-			@output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[@turn]} | #{@resulta[@turn]}:#{@resultb[@turn]}\n  2. | ____ | 0:0\n  3. | ____ | 0:0\n  4. | ____ | 0:0\n  5. | ____ | 0:0\n  6. | ____ | 0:0\n  7. | ____ | 0:0\n  8. | ____ | 0:0\n  9. | ____ | 0:0\n 10. | ____ | 0:0\n 11. | ____ | 0:0\n 12. | ____ | 0:0\n\n")
-=begin	
+			# @output.puts("TURN | XXXX | SCORE\n===================\n  1. | #{@table[@turn]} | #{@resulta[@turn]}:#{@resultb[@turn]}\n  2. | ____ | 0:0\n  3. | ____ | 0:0\n  4. | ____ | 0:0\n  5. | ____ | 0:0\n  6. | ____ | 0:0\n  7. | ____ | 0:0\n  8. | ____ | 0:0\n  9. | ____ | 0:0\n 10. | ____ | 0:0\n 11. | ____ | 0:0\n 12. | ____ | 0:0\n\n")
+
 			count = []
 			thing = 0
 			(@turn + 1).times do
@@ -230,11 +270,13 @@ module OXs_Game
 				thing += 1
 			end
 			
-			@output.puts"TURN | XXXX | SCORE\n===================\n"
+			output_string = ""
+			
+			output_string << "TURN | XXXX | SCORE\n===================\n"
 			
 			@table.zip(count).each do |item, number|
 				if number != nil
-					@output.puts"  #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
+					output_string << "  #{number}. | #{item} | #{@resulta[number - 1]}:#{@resultb[number - 1]}\n"
 				else
 					break
 				end
@@ -242,17 +284,19 @@ module OXs_Game
 			
 			
 			empty_count = turn + 1
-			(12 - turn).times do
+			(11 - turn).times do
 				if empty_count >= 9
-					@output.puts " #{empty_count + 1}. | ____ | 0:0\n"
+					output_string << " #{empty_count + 1}. | ____ | 0:0\n"
 				else
-					@output.puts "  #{empty_count + 1}. | ____ | 0:0\n"
+					output_string << "  #{empty_count + 1}. | ____ | 0:0\n"
 				end
 				empty_count += 1
 			end
 			
-			@output.puts "\n"
-=end						
+			output_string << "\n"
+			
+			@output.puts output_string
+						
 		end
 
 		# Test 23

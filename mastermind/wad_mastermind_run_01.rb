@@ -43,27 +43,43 @@ module OXs_Game
 	g.displaymenu()
 	selection = @input.gets.chomp
 	
-	# menu selection 
+	# menu selection.
 	if selection == '1'
-		# Setting up the game 
+		
+		# Setting up the game.
 		turns_left = 12
 		win = g.clearwinner()
 		turn = g.setturn(0)
 		g.cleartable()
 		secret = g.gensecret("RGBP")
-		# Main game loop 
+		
+		# Main game loop.
 		until (turns_left == 0) || (win == 1) do
 			puts "there are #{turns_left} turns left."
 			turns_left -= 1
 			
+			# Print current table.
+			g.displaytable()
+			
+			# Enter guess and checks if the guess is valid.
 			puts "Enter your guess:"
 			guess = gets.chomp.upcase
-			puts g.checksecret(guess)
 			until g.checksecret(guess) == 0 do
 				puts "Wrong input, try again:"
-				g.getguess
+				guess = gets.chomp.upcase
 			end
 			
+			# Append guess to table.
+			g.settableturnvalue(turn,guess)
+			
+			# Check result of the round.
+			g.checkresult(turn)
+			
+			# Chech score.
+			win = g.winner()
+			
+			# Change turn count.
+			turn += 1
 		end
 	elsif selection == '2'
 		g.clearwinner()
