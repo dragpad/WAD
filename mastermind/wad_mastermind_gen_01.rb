@@ -330,6 +330,65 @@ module OXs_Game
 			@output.puts("TURN | #{@secret} | SCORE\n===================\n  1. | ____ |\n  2. | ____ |\n  3. | ____ |\n  4. | ____ |\n  5. | ____ |\n  6. | ____ |\n  7. | ____ |\n  8. | ____ |\n  9. | ____ |\n 10. | ____ |\n 11. | ____ |\n 12. | ____ |\n\n")
 		end
 		
+		# Backup
+		
+		def backup()
+			begin
+				backup = File.open("backup.txt","w")
+				backup.puts("#{@turn + 1}")
+				backup.puts("#{@secret}")
+				backup.puts("#{@resulta.join(",")}")
+				backup.puts("#{@resultb.join(",")}")
+				backup.puts("#{@table.join(",")}")
+				backup.close
+			ensure
+				backup = File.new("backup.txt","w")
+				backup.puts("#{@turn + 1}")
+				backup.puts("#{@secret}")
+				backup.puts("#{@resulta.join(",")}")
+				backup.puts("#{@resultb.join(",")}")
+				backup.puts("#{@table.join(",")}")
+				backup.close
+			end
+		end
+		
+		def readBackup()
+			backup = File.open("backup.txt","r")
+			backup_content = []
+			
+			backup.each do |line|
+		        backup_content.push(line)
+		    end
+		    
+		    @turn = (backup_content[0]).to_i
+		    
+		    @secret = backup_content[1]
+		    
+		    @resulta = (backup_content[2]).split(",")
+		    resulta = []
+		    for item in @resulta do
+		    	item = item.to_i
+		    	resulta.push(item)
+		    end
+		    @resulta = resulta
+		    print @resulta[-1]
+		    
+		    @resultb = (backup_content[3]).split(",")
+		    resultb =[]
+		    for item in @resultb do
+		    	item = item.to_i
+		    	resultb.push(item)
+		    end
+		    @resultb = resultb
+		    
+		    @table = (backup_content[4]).split(",")
+		    backup.close
+		end
+		
+		def return_turn()
+			return @turn
+		end
+		
 		# Any code/methods aimed at passing the RSpect tests should be added above.
 
 	end

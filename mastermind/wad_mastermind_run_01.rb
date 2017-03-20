@@ -47,8 +47,53 @@ module OXs_Game
 		# Menu selection.
 		# Start.
 		if selection == '1'
-
-
+			
+			g.readBackup()
+			turn = g.return_turn()
+			turns_left = 12 - turn
+			
+			
+			# Main game loop.
+			until (turns_left == 0) || (win == 1) do
+				puts "there are #{turns_left} turns left."
+				turns_left -= 1
+				
+				# Print current table.
+				g.displaytable()
+				
+				# Enter guess and checks if the guess is valid.
+				puts "Enter your guess:"
+				guess = gets.chomp.upcase
+				until g.checksecret(guess) == 0 do
+					puts "Wrong input, try again:"
+					guess = gets.chomp.upcase
+				end
+				
+				# Append guess to table.
+				g.settableturnvalue(turn,guess)
+				
+				# Check result of the round.
+				g.checkresult(turn)
+				
+				# Chech score.
+				win = g.winner()
+				
+				# Change turn count.
+				turn += 1
+				
+				puts("Turn count is #{turn}")
+				puts("Turn count is #{turns_left}")
+				
+				g.backup()
+			end
+			
+			if turns_left == 0 && win ==0
+				puts "You Lost :'("
+			end
+			
+		# New.
+		elsif selection == '2'
+		
 			# Setting up the game.
 			turns_left = 12
 			win = g.clearwinner()
@@ -84,25 +129,16 @@ module OXs_Game
 				
 				# Change turn count.
 				turn += 1
+				
+				puts("Turn count is #{turn}")
+				puts("Turn count is #{turns_left}")
+				
+				g.backup()
 			end
 			
 			if turns_left == 0 && win ==0
 				puts "You Lost :'("
 			end
-			
-		# New.
-		elsif selection == '2'
-		
-		# Setting up the game.
-			turns_left = 12
-			win = g.clearwinner()
-			turn = g.setturn(0)
-			g.cleartable()
-			secret = g.gensecret("RGBP")
-			
-			g.clearwinner()
-			g.setturn(0)
-			g.gensecret("RGBP")
 			
 		# Analysis.
 		elsif selection == '3'
