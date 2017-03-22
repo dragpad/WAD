@@ -34,8 +34,8 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
 	
 	get '/new' do
 		$turns_left = 12
-		@win = g.clearwinner()
-		@turn = g.setturn(0)
+		$win = g.clearwinner()
+		$turn = g.setturn(0)
 		g.cleartable()
 		$table = g.return_table()
 		@secret = g.gensecret("RGBP")
@@ -43,24 +43,42 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
     end
     
     post '/new' do
-        @guess = params[:guess]
-        g.settableturnvalue($turn,@guess)
-        #g.checkresult(turn)
-        $turns_left -= 1
-        $turn += 1
-        redirect '/game'
-        
+        @guess = params[:guess].upcase
+        if g.checksecret(@guess) == 1
+            redirect '/game'
+        else
+            g.settableturnvalue($turn,@guess)
+            g.checkresult_web($turn)
+            #g.checkresult(turn)
+            $turns_left -= 1
+            $turn += 1
+            redirect '/game'
+        end
     end
     
     get '/game' do
+        @resulta = g.return_resulta()
+        @resultb = g.return_resultb()
         erb :game
     end
     
     post '/game' do
-        @guess = params[:guess]
-        #g.checkresult(turn)
-        $turns_left -= 1
-        redirect '/game'
+        if ($win == 1)
+            redirect '/win'
+        elsif ($turns_left == 1)
+            redirect '/lost'
+        else
+            @guess = params[:guess].upcase
+            if g.checksecret(@guess) == 1
+                redirect '/game'
+            else
+                g.settableturnvalue($turn,@guess)
+                g.checkresult_web($turn)
+                $turns_left -= 1
+                $turn += 1
+                redirect '/game'
+            end
+        end
     end
     
     get '/exit' do

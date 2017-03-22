@@ -389,8 +389,91 @@ module OXs_Game
 			return @turn
 		end
 		
+		# Web App Methods ===========================================================
+		
 		def return_table()
 			return @table
+		end
+		
+		def checkresult_web(turn)
+			color_score = 0
+			placement_score = 0
+			secret = @secret.to_s.split("")
+			guess = @table[turn].to_s.split("")
+			
+			gR = 0
+			gB = 0
+			gG = 0
+			gP = 0
+			for thing in guess do
+				if thing == "R"
+					gR += 1
+				elsif thing == "B"
+					gB += 1
+				elsif thing == "G"
+					gG += 1
+				elsif thing == "P"
+					gP += 1
+				end
+			end
+			
+			sR = 0
+			sB = 0
+			sG = 0
+			sP = 0
+			for stuff in secret do
+				if stuff == "R"
+					sR += 1
+				elsif stuff == "B"
+					sB += 1
+				elsif stuff == "G"
+					sG += 1
+				elsif stuff == "P"
+					sP += 1
+				end
+			end
+			
+			def compare_score(secretColor, guessColor)
+				color_score = 0
+				begin
+					if (guessColor/secretColor) >= 1
+						color_score += secretColor
+					else
+						color_score += (guessColor/secretColor) * secretColor
+					end
+					return color_score
+				rescue
+					return 0
+				end
+			end
+			
+			color_score += compare_score(sR,gR)
+			color_score += compare_score(sB,gB)
+			color_score += compare_score(sG,gG)
+			color_score += compare_score(sP,gP)
+			
+			place = 0
+			for item in guess do
+				if item == secret[place]
+					placement_score += 1
+				end
+				place += 1
+			end
+
+			color_score -= placement_score
+			
+			@resulta[turn] = placement_score
+			
+			@resultb[turn] = color_score
+
+		end
+		
+		def return_resulta()
+			return @resulta[@turn]
+		end
+		
+		def return_resultb()
+			return @resultb[@turn]
 		end
 		
 		# Any code/methods aimed at passing the RSpect tests should be added above.
