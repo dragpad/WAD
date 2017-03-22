@@ -389,6 +389,10 @@ module OXs_Game
 			return @turn
 		end
 		
+		def return_table()
+			return @table
+		end
+		
 		# Any code/methods aimed at passing the RSpect tests should be added above.
 
 	end

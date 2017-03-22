@@ -35,7 +35,7 @@ module OXs_Game
 	if game == "1"
 		
 	# Any code added to command line game should be added below.
-		
+	
 	g.start()
 	g.created_by()
 	g.student_id()
@@ -165,10 +165,49 @@ end
 
 # Sinatra routes
 
+	#class Mastermind_web
+	include OXs_Game
+	#puts "banana"
+	#puts OXs_Game::Game.instance_methods
+	@input = 0 
+	@output = 0
+	g = Game.new(@input,@output)
+	playing = true
+	input = ""
+	menu = ""
+	guess = ""
+	secret = "XXXX"
+	turn = 0
+	win = 0
+	game = ""
+
+	#end
+	
+	get '/' do
+	    erb :home
+	end
+	
+	get '/start' do
+		erb :start
+	end
+	
+	post '/new' do
+		erb :new
+	end
+	
+	get '/notfound' do
+		erb :notfound
+	end
+	
+	not_found do
+		status 404
+		redirect '/notfound'
+	end
+
+
+
 	# Any code added to web-based game should be added below.
 
-
-
 	# Any code added to web-based game should be added above.
-
+	
 # End program
