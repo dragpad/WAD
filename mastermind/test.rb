@@ -29,8 +29,35 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
 	end
 	
 	get '/start' do
+	    g.readBackup_web()
+	    $turn = g.return_turn()
+		$turns_left = 12 - $turn
+        $table = g.return_table()
+        $win = g.clearwinner()
 		erb :start
 	end
+	
+	post '/start' do
+        if ($turns_left == 1)
+            redirect '/lost'
+        else
+            @guess = params[:guess].upcase
+            if g.checksecret(@guess) == 1
+                $wrong = 1
+                redirect '/game'
+            else
+                g.settableturnvalue($turn,@guess)
+                g.checkresult_web($turn)
+                if g.return_resulta() == 4
+                    redirect '/win'
+                end
+                $turns_left -= 1
+                $turn += 1
+                g.backup_web()
+                redirect '/game'
+            end
+        end
+    end
 	
 	get '/new' do
 		$turns_left = 12
@@ -45,6 +72,7 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
     post '/new' do
         @guess = params[:guess].upcase
         if g.checksecret(@guess) == 1
+            $wrong = 1
             redirect '/game'
         else
             g.settableturnvalue($turn,@guess)
@@ -52,6 +80,7 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
             #g.checkresult(turn)
             $turns_left -= 1
             $turn += 1
+            g.backup_web()
             redirect '/game'
         end
     end
@@ -63,27 +92,44 @@ require "#{File.dirname(__FILE__)}/wad_mastermind_gen_01"
     end
     
     post '/game' do
-        if ($win == 1)
-            redirect '/win'
-        elsif ($turns_left == 1)
+        if ($turns_left == 1)
             redirect '/lost'
         else
             @guess = params[:guess].upcase
             if g.checksecret(@guess) == 1
+                $wrong = 1
                 redirect '/game'
             else
                 g.settableturnvalue($turn,@guess)
                 g.checkresult_web($turn)
+                if g.return_resulta() == 4
+                    redirect '/win'
+                end
                 $turns_left -= 1
                 $turn += 1
+                g.backup_web()
+                $wrong = 0
                 redirect '/game'
             end
         end
     end
     
-    get '/exit' do
-        redirect '/home'
+    get '/analysis' do
+        g.readBackup_web()
+        $table = g.return_table()
+        @resultaList = g.return_resultaList()
+        @resultbList = g.return_resultbList()
+        erb :analysis
     end
+    
+    get '/lost' do
+        erb :lost
+    end
+    
+    get '/win' do
+        erb :win
+    end
+    
 	
 	get '/notfound' do
 		erb :notfound

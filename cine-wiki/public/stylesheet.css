@@ -98,3 +98,11 @@ img {
   border: solid #d4561e 3px;
   max-height:400px;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}

@@ -476,6 +476,66 @@ module OXs_Game
 			return @resultb[@turn]
 		end
 		
+		def return_resultaList()
+			return @resulta
+		end
+		
+		def return_resultbList()
+			return @resultb
+		end
+		
+		def backup_web()
+			begin
+				backup = File.open("backup_web.txt","w")
+				backup.puts("#{@turn + 1}")
+				backup.puts("#{@secret}")
+				backup.puts("#{@resulta.join(",")}")
+				backup.puts("#{@resultb.join(",")}")
+				backup.puts("#{@table.join(",")}")
+				backup.close
+			ensure
+				backup = File.new("backup.txt","w")
+				backup.puts("#{@turn + 1}")
+				backup.puts("#{@secret}")
+				backup.puts("#{@resulta.join(",")}")
+				backup.puts("#{@resultb.join(",")}")
+				backup.puts("#{@table.join(",")}")
+				backup.close
+			end
+		end
+		
+		def readBackup_web()
+			backup = File.open("backup_web.txt","r")
+			backup_content = []
+			
+			backup.each do |line|
+		        backup_content.push(line)
+		    end
+		    
+		    @turn = (backup_content[0]).to_i
+		    
+		    @secret = backup_content[1]
+		    
+		    @resulta = (backup_content[2]).split(",")
+		    resulta = []
+		    for item in @resulta do
+		    	item = item.to_i
+		    	resulta.push(item)
+		    end
+		    @resulta = resulta
+		    
+		    @resultb = (backup_content[3]).split(",")
+		    resultb =[]
+		    for item in @resultb do
+		    	item = item.to_i
+		    	resultb.push(item)
+		    end
+		    @resultb = resultb
+		    
+		    @table = (backup_content[4]).split(",")
+		    backup.close
+		end
+		
 		# Any code/methods aimed at passing the RSpect tests should be added above.
 
 	end
